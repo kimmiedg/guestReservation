@@ -23,3 +23,11 @@ services:
       DATABASE_HOST: db
       DATABASE_USER: user
       DATABASE_PASSWORD: admin123
+
+  test:
+    build: .
+    command: bundle exec rspec
+    volumes:
+      - ".:/guestReservation"
+    depends_on:
+      - db
