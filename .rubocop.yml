@@ -1,0 +1,44 @@
+plugins:
+  - rubocop-performance
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+  TargetRubyVersion: 3.4.4
+  Exclude:
+    - 'db/**/**'
+    - 'test/**/**'
+    - 'config/**/**'
+    - 'bin/**/**'
+    - 'Gemfile'
+    - 'config.ru'
+    - Rakefile
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: true
+
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: true
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+
+Layout/EmptyLineAfterMagicComment:
+  Enabled: true
+
+Performance:
+  Enabled: true
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+  Include:
+    - 'app/models/**/*.rb'
+    - 'app/controllers/**/*.rb'
+    - 'app/serializers/**/*.rb'
+
+Style/Documentation:
+  Enabled: false
