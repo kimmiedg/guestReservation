@@ -168,3 +168,571 @@ Migrating to AddIndexToGuests (20251130152655)
   [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT /*application='GuestReservation'*/[0m
   [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(6706962880234745520) /*application='GuestReservation'*/[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='GuestReservation'*/[0m
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:10:00 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (1.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='GuestReservation'*/[0m
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (4.3ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (4.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Create (2.9ms)[0m  [1m[32mINSERT INTO "guests" ("first_name", "last_name", "phone", "email", "created_at", "updated_at") VALUES ('Wayne', 'Woodbridge', '{639123456789,639123456789}', 'wayne_woodbridge@bnb.com', '2025-12-01 07:10:00.894560', '2025-12-01 07:10:00.894560') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (2.4ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (4.6ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', NULL, 3800.0, 500.0, 4500.0, '2025-12-01 07:10:00.996110', '2025-12-01 07:10:00.996110') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (4.2ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (1, 1, '2025-12-01 07:10:01.018983', '2025-12-01 07:10:01.018983') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 265ms (Views: 0.2ms | ActiveRecord: 70.4ms (6 queries, 0 cached) | GC: 18.9ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:10:23 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (1.3ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+Completed 500 Internal Server Error in 50ms (ActiveRecord: 9.1ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+RuntimeError (Guest doesn't exists):
+  
+app/services/payloads/retrieve_guest.rb:26:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:11:00 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.5ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+Completed 500 Internal Server Error in 20ms (ActiveRecord: 2.6ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+RuntimeError (Guest doesn't exists):
+  
+app/services/payloads/retrieve_guest.rb:26:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:11:02 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.4ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (1.8ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+Completed 500 Internal Server Error in 22ms (ActiveRecord: 4.0ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+RuntimeError (Guest doesn't exists):
+  
+app/services/payloads/retrieve_guest.rb:26:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:11:21 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.3ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (2.7ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:24:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mCACHE Guest Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ (pry):2:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mCACHE Guest Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "guests" WHERE "guests"."phone" = '{639123456789,639123456789}' LIMIT 1[0m
+  ↳ (pry):2:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Load (0.8ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{{639123456789,639123456789}}' LIMIT 1[0m
+  ↳ (pry):4:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Load (0.8ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ (pry):8:in 'Payloads::RetrieveGuest#get_guest'
+Completed 500 Internal Server Error in 296755ms (ActiveRecord: 9.5ms (10 queries, 3 cached) | GC: 133.5ms)
+
+
+  
+RuntimeError (Guest doesn't exists):
+  
+app/services/payloads/retrieve_guest.rb:26:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:16:23 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (1.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{639123456789,639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{639123456789,639123456789}' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (0.5ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 07:16:23.256045', '2025-12-01 07:16:23.256045') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (0.8ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (2, 1, '2025-12-01 07:16:23.267895', '2025-12-01 07:16:23.267895') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 166ms (Views: 0.3ms | ActiveRecord: 25.7ms (4 queries, 1 cached) | GC: 0.9ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:20:42 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accursate" => "4500.00"}}
+Completed 500 Internal Server Error in 4ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+RuntimeError (Payload is not recognized):
+  
+app/services/payloads/retrieve_guest.rb:36:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:23:23 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NoMethodError (undefined method '[]' for nil):
+  
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:24:47 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 19ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 2.8ms)
+
+
+  
+NoMethodError (undefined method 'recognized?' for an instance of Payloads::RetrieveGuest):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:28:23 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 8ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:29:06 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 7ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:29:21 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:29:56 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:33:47 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:52:11 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:52:31 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:59:11 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:59:19 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+NameError (uninitialized constant Payloads::RetrieveGuest::Errors):
+  
+app/services/payloads/retrieve_guest.rb:37:in 'Payloads::RetrieveGuest#payload_params'
+app/services/payloads/retrieve_guest.rb:48:in 'Payloads::RetrieveGuest#find_guest'
+app/services/payloads/retrieve_guest.rb:21:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 15:59:55 +0800
+  
+NameError (uninitialized constant Api::V1::BaseController::Errors):
+  
+app/controllers/api/v1/base_controller.rb:6:in '<class:BaseController>'
+app/controllers/api/v1/base_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/base_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/base_controller.rb:3:in '<main>'
+app/controllers/api/v1/reservations_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/reservations_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/reservations_controller.rb:3:in '<main>'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:00:11 +0800
+  
+NameError (uninitialized constant Api::V1::BaseController::Errors):
+  
+app/controllers/api/v1/base_controller.rb:6:in '<class:BaseController>'
+app/controllers/api/v1/base_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/base_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/base_controller.rb:3:in '<main>'
+app/controllers/api/v1/reservations_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/reservations_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/reservations_controller.rb:3:in '<main>'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:01:48 +0800
+  
+NameError (uninitialized constant Api::V1::BaseController::Errors):
+  
+app/controllers/api/v1/base_controller.rb:6:in '<class:BaseController>'
+app/controllers/api/v1/base_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/base_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/base_controller.rb:3:in '<main>'
+app/controllers/api/v1/reservations_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/reservations_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/reservations_controller.rb:3:in '<main>'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:02:11 +0800
+  
+NameError (uninitialized constant Api::V1::BaseController::Errors):
+  
+app/controllers/api/v1/base_controller.rb:6:in '<class:BaseController>'
+app/controllers/api/v1/base_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/base_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/base_controller.rb:3:in '<main>'
+app/controllers/api/v1/reservations_controller.rb:5:in '<module:V1>'
+app/controllers/api/v1/reservations_controller.rb:4:in '<module:Api>'
+app/controllers/api/v1/reservations_controller.rb:3:in '<main>'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:12:58 +0800
+  [1m[36mActiveRecord::SchemaMigration Load (1.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='GuestReservation'*/[0m
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 400 Bad Request in 19ms (Views: 1.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 4.3ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:13:13 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 400 Bad Request in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.2ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:13:17 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (2.4ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' AND "guests"."phone" = '{639123456789}' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mGuest Create (6.1ms)[0m  [1m[32mINSERT INTO "guests" ("first_name", "last_name", "phone", "email", "created_at", "updated_at") VALUES ('Wayne', 'Woodbridge', '{639123456789}', 'wayne_woodbridge@bnb.com', '2025-12-01 08:13:17.469321', '2025-12-01 08:13:17.469321') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+Completed 500 Internal Server Error in 97ms (ActiveRecord: 25.2ms (2 queries, 0 cached) | GC: 2.9ms)
+
+
+  
+ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_guests_on_email"
+DETAIL:  Key (email)=(wayne_woodbridge@bnb.com) already exists.
+)
+Caused by: PG::UniqueViolation (ERROR:  duplicate key value violates unique constraint "index_guests_on_email"
+DETAIL:  Key (email)=(wayne_woodbridge@bnb.com) already exists.
+)
+
+Information for: ActiveRecord::RecordNotUnique (PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint "index_guests_on_email"
+DETAIL:  Key (email)=(wayne_woodbridge@bnb.com) already exists.
+):
+  
+
+Information for cause: PG::UniqueViolation (ERROR:  duplicate key value violates unique constraint "index_guests_on_email"
+DETAIL:  Key (email)=(wayne_woodbridge@bnb.com) already exists.
+):
+  
+app/services/payloads/retrieve_guest.rb:23:in 'Payloads::RetrieveGuest#get_guest'
+app/services/payloads/retrieve_guest.rb:15:in 'Payloads::RetrieveGuest#call'
+app/services/payloads/retrieve_guest.rb:11:in 'Payloads::RetrieveGuest.call'
+app/services/payloads/create_reservation.rb:49:in 'Payloads::CreateReservation#transform_guest_payload'
+app/services/payloads/create_reservation.rb:20:in 'Payloads::CreateReservation#create_reservation'
+app/services/payloads/create_reservation.rb:14:in 'Payloads::CreateReservation#call'
+app/services/payloads/create_reservation.rb:10:in 'Payloads::CreateReservation.call'
+app/controllers/api/v1/reservations_controller.rb:7:in 'Api::V1::ReservationsController#create'
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:18:26 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurdate" => "4500.00"}}
+Completed 400 Bad Request in 8ms (Views: 0.5ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:18:34 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.4ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.8ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (2.8ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 08:18:34.682257', '2025-12-01 08:18:34.682257') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (2.3ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (3, 1, '2025-12-01 08:18:34.701481', '2025-12-01 08:18:34.701481') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 152ms (Views: 0.1ms | ActiveRecord: 20.3ms (4 queries, 1 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:18:39 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.4ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.1ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (1.3ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 08:18:39.866250', '2025-12-01 08:18:39.866250') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (0.5ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (4, 1, '2025-12-01 08:18:39.878222', '2025-12-01 08:18:39.878222') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 39ms (Views: 0.1ms | ActiveRecord: 2.9ms (4 queries, 1 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:18:44 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.4ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:47:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (1.2ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 08:18:44.052002', '2025-12-01 08:18:44.052002') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (0.5ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (5, 1, '2025-12-01 08:18:44.060749', '2025-12-01 08:18:44.060749') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 31ms (Views: 0.1ms | ActiveRecord: 2.5ms (4 queries, 1 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:21:05 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "nights" => 4, "guests" => 4, "adults" => 2, "children" => 2, "infants" => 0, "status" => "accepted", "guest" => {"id" => 1, "first_name" => "Wayne", "last_name" => "Woodbridge", "phone" => "639123456789", "email" => "[FILTERED]"}, "currency" => "AUD", "payout_price" => "3800.00", "security_price" => "500", "total_price" => "4500.00", "reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "adults" => 2, "infants" => 0, "children" => 2, "status" => "accepted", "currency" => "AUD", "payout_price" => "3800.00", "security_price" => "500", "total_price" => "4500.00"}}
+Completed 400 Bad Request in 4ms (Views: 1.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
