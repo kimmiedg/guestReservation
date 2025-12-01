@@ -22,8 +22,8 @@ module Payloads
 
       g = Guest.create(guest_params)
       return g if g.valid? && g.persisted?
-      binding.pry
-      raise "Guest doesn't exists"
+
+      raise Errors::UnrecognizedPayload, "Guest payload is not recognized" 
     end
 
     def payload_params
@@ -33,7 +33,6 @@ module Payloads
         return "Payloads::GuestPayloads::#{payload_name}Params".safe_constantize.call(@params)
       end
 
-      # raise "Payload is not recognized" 
       raise Errors::UnrecognizedPayload, "Payload is not recognized" 
     end
 
@@ -45,7 +44,6 @@ module Payloads
 
     def find_guest
       Guest.find_by(email: payload_params[:guest][:email])
-      # phone: Array.wrap(payload_params[:guest][:phone])
     end
   end
 end

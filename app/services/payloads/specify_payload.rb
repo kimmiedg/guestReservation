@@ -51,7 +51,7 @@ module Payloads
     end
 
     def filter_params
-      return @params[:reservation] if @params.key?("reservation")
+      return @params[:reservation] if @params[:reservation][:guest_details]
       
       @params
     end
