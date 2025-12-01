@@ -19,11 +19,11 @@ module Payloads
     def create_reservation
       guest = transform_guest_payload
       reservation = Reservation.new(reservation_params)
-      
+
       failure(reservation.errors.full_messages.join(", ")) unless reservation.valid? && reservation.persisted?
       failure("Guest is invalid") if guest.blank?
 
-      reservation.guests << guest 
+      reservation.guests << guest
       reservation.save!
       reservation
     end
@@ -41,7 +41,7 @@ module Payloads
       ActionController::Parameters.new(payload_params)
                                   .require(:reservation)
                                   .permit(:start_date, :end_date, :no_of_nights, :no_of_guests,
-                                          :adults, :infants, :children, :status, :currency, 
+                                          :adults, :infants, :children, :status, :currency,
                                           :payout_price, :security_price, :total_price)
     end
 

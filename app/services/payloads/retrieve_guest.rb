@@ -2,7 +2,6 @@
 
 module Payloads
   class RetrieveGuest
-
     def initialize(params)
       @params = params
     end
@@ -12,18 +11,18 @@ module Payloads
     end
 
     def call
-      get_guest
+      guest
     end
 
     private
 
-    def get_guest
+    def guest
       return find_guest if find_guest.present?
 
       g = Guest.create(guest_params)
       return g if g.valid? && g.persisted?
 
-      raise Errors::UnrecognizedPayload, "Guest payload is not recognized" 
+      raise Errors::UnrecognizedPayload, "Guest payload is not recognized"
     end
 
     def payload_params
@@ -33,7 +32,7 @@ module Payloads
         return "Payloads::GuestPayloads::#{payload_name}Params".safe_constantize.call(@params)
       end
 
-      raise Errors::UnrecognizedPayload, "Payload is not recognized" 
+      raise Errors::UnrecognizedPayload, "Payload is not recognized"
     end
 
     def guest_params

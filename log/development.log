@@ -796,3 +796,75 @@ Processing by Api::V1::ReservationsController#create as */*
 Completed 200 OK in 26ms (Views: 0.1ms | ActiveRecord: 2.7ms (4 queries, 1 cached) | GC: 0.5ms)
 
 
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:54:13 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (2.1ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (2.1ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 08:54:13.250778', '2025-12-01 08:54:13.250778') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (1.8ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (8, 1, '2025-12-01 08:54:13.258349', '2025-12-01 08:54:13.258349') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 72ms (Views: 0.3ms | ActiveRecord: 19.5ms (4 queries, 1 cached) | GC: 0.2ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 16:54:17 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "nights" => 4, "guests" => 4, "adults" => 2, "children" => 2, "infants" => 0, "status" => "accepted", "guest" => {"id" => 1, "first_name" => "Wayne", "last_name" => "Woodbridge", "phone" => "639123456789", "email" => "[FILTERED]"}, "currency" => "AUD", "payout_price" => "3800.00", "security_price" => "500", "total_price" => "4500.00", "reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "adults" => 2, "infants" => 0, "children" => 2, "status" => "accepted", "currency" => "AUD", "payout_price" => "3800.00", "security_price" => "500", "total_price" => "4500.00"}}
+  [1m[36mGuest Load (0.4ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:46:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (1.3ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 08:54:17.059731', '2025-12-01 08:54:17.059731') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (0.6ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (9, 1, '2025-12-01 08:54:17.062786', '2025-12-01 08:54:17.062786') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 24ms (Views: 0.1ms | ActiveRecord: 2.7ms (4 queries, 1 cached) | GC: 0.3ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 17:11:20 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "nights" => 4, "guests" => 4, "adults" => 2, "children" => 2, "infants" => 0, "status" => "accepted", "guest" => {"id" => 1, "first_name" => "Wayne", "last_name" => "Woodbridge", "phone" => "639123456789", "email" => "[FILTERED]"}, "currency" => "AUD", "payout_price" => "3800.00", "security_price" => "500", "total_price" => "4500.00", "reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "adults" => 2, "infants" => 0, "children" => 2, "status" => "accepted", "currency" => "AUD", "payout_price" => "3800.00", "security_price" => "500", "total_price" => "4500.00"}}
+  [1m[36mGuest Load (2.5ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:45:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:45:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (1.3ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 09:11:20.599322', '2025-12-01 09:11:20.599322') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (1.5ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (10, 1, '2025-12-01 09:11:20.602754', '2025-12-01 09:11:20.602754') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 56ms (Views: 0.1ms | ActiveRecord: 13.0ms (4 queries, 1 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/reservations" for ::1 at 2025-12-01 17:11:23 +0800
+Processing by Api::V1::ReservationsController#create as */*
+  Parameters: {"reservation" => {"start_date" => "2021-03-12", "end_date" => "2021-03-16", "expected_payout_amount" => "3800.00", "guest_details" => {"localized_description" => "4 guests", "number_of_adults" => 2, "number_of_children" => 2, "number_of_infants" => 0}, "guest_email" => "[FILTERED]", "guest_first_name" => "Wayne", "guest_id" => 1, "guest_last_name" => "Woodbridge", "guest_phone_numbers" => ["639123456789", "639123456789"], "listing_security_price_accurate" => "500.00", "host_currency" => "AUD", "nights" => 4, "number_of_guests" => 4, "status_type" => "accepted", "total_paid_amount_accurate" => "4500.00"}}
+  [1m[36mGuest Load (0.5ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1 /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/retrieve_guest.rb:45:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mCACHE Guest Load (0.0ms)[0m  [1m[34mSELECT "guests".* FROM "guests" WHERE "guests"."email" = 'wayne_woodbridge@bnb.com' LIMIT 1[0m
+  ↳ app/services/payloads/retrieve_guest.rb:45:in 'Payloads::RetrieveGuest#find_guest'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservation Create (1.0ms)[0m  [1m[32mINSERT INTO "reservations" ("start_date", "end_date", "no_of_nights", "no_of_guests", "adults", "infants", "children", "status", "currency", "payout_price", "security_price", "total_price", "created_at", "updated_at") VALUES ('2021-03-12', '2021-03-16', 4, 4, 2, 0, 2, 'accepted', 'AUD', 3800.0, 500.0, 4500.0, '2025-12-01 09:11:23.835179', '2025-12-01 09:11:23.835179') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mReservationGuest Create (0.5ms)[0m  [1m[32mINSERT INTO "reservation_guests" ("reservation_id", "guest_id", "created_at", "updated_at") VALUES (11, 1, '2025-12-01 09:11:23.838262', '2025-12-01 09:11:23.838262') RETURNING "id" /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[35mCOMMIT /*action='create',application='GuestReservation',controller='reservations'*/[0m
+  ↳ app/services/payloads/create_reservation.rb:27:in 'Payloads::CreateReservation#create_reservation'
+Completed 200 OK in 25ms (Views: 0.1ms | ActiveRecord: 2.6ms (4 queries, 1 cached) | GC: 0.0ms)
+
+

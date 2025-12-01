@@ -2,7 +2,6 @@
 
 module Payloads
   class SpecifyPayload
-
     def initialize(params)
       @params = params
     end
@@ -18,20 +17,20 @@ module Payloads
     private
 
     def payload1_keys
-      %w[start_date end_date nights guests adults children infants status 
-        guest currency payout_price security_price total_price]
+      %w[start_date end_date nights guests adults children infants status
+         guest currency payout_price security_price total_price]
     end
 
     def payload2_keys
       %w[listing_security_price_accurate host_currency nights number_of_guests
-        status_type total_paid_amount_accurate guest_email guest_id
-        guest_first_name guest_last_name guest_phone_numbers]
+         status_type total_paid_amount_accurate guest_email guest_id
+         guest_first_name guest_last_name guest_phone_numbers]
     end
 
     def payload_array
       [
-        { 
-          payload1: payload1_keys 
+        {
+          payload1: payload1_keys
         },
         {
           payload2: payload2_keys
@@ -42,17 +41,15 @@ module Payloads
     def detect_payload
       payloads = payload_array
       payloads.each do |payload|
-        if payload.values.first.all? {|key| filter_params.key?(key) }
-          return payload.keys.first.to_s
-        end
+        return payload.keys.first.to_s if payload.values.first.all? { |key| filter_params.key?(key) }
       end
-      
+
       nil
     end
 
     def filter_params
-      return @params[:reservation] if @params[:reservation][:guest_details]
-      
+      return @params[:reservation] if @params[:reservation]&.key?(:guest_details)
+
       @params
     end
   end

@@ -13,6 +13,7 @@ AllCops:
     - 'Gemfile'
     - 'config.ru'
     - Rakefile
+    - spec/factories
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: true
